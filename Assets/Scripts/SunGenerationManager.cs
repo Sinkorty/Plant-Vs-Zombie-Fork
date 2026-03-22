@@ -9,15 +9,13 @@ public class SunGenerationManager : MonoBehaviour
     [Header("Scene Ref")]
     [SerializeField] private Transform topLeftPoint;
     [SerializeField] private Transform bottomRightPoint;
+    [SerializeField] private Transform pickupEndPoint;
+
     [Header("Resource Ref")]
     [SerializeField] private Transform sunPrefab;
     [Header("Basic Params")]
     [SerializeField] private float sunGenerateShortTimerMax = 10;
     [SerializeField] private float sunGenerateLongTimerMax = 20;
-    [SerializeField] private float sunFallingDownSpeedMin = 0.03f;
-    [SerializeField] private float sunFallingDownSpeedMax = 0.06f;
-    [SerializeField] private float sunFallingDownTimeMin = 5;
-    [SerializeField] private float sunFallingDownTimeMax = 8;
 
     [SerializeField] private bool isAllowed = true;
 
@@ -36,6 +34,9 @@ public class SunGenerationManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!isAllowed) return;
+
+
         sunGenerateTimer += Time.deltaTime;
         if (sunGenerateTimer >= currentSunGenerateTimerMax)
         {
@@ -48,6 +49,7 @@ public class SunGenerationManager : MonoBehaviour
     {
         //Debug.Log("Generate Sun, current timer max:" + currentSunGenerateTimerMax);
         Transform sunTransfrom = Instantiate(sunPrefab);
+        sunTransfrom.SetParent(transform);
 
         Vector3 posToSpawn = new Vector3();
         posToSpawn.x = Random.Range(topLeftPoint.position.x, bottomRightPoint.position.x);
@@ -57,8 +59,12 @@ public class SunGenerationManager : MonoBehaviour
         Sun sun = sunTransfrom.GetComponent<Sun>();
         sun.transform.position = posToSpawn;
 
-        float fallingTime = Random.Range(sunFallingDownTimeMin, sunFallingDownTimeMax);
-        float fallingSpeed = Random.Range(sunFallingDownSpeedMin, sunFallingDownSpeedMax);
-        sun.StartFallDown(fallingTime, fallingSpeed);
+        //float fallingTime = Random.Range(sunFallingDownTimeMin, sunFallingDownTimeMax);
+        //float fallingSpeed = Random.Range(sunFallingDownSpeedMin, sunFallingDownSpeedMax);
+        sun.StartFallDown();
+    }
+    public Transform GetPickupEndPoint()
+    {
+        return pickupEndPoint;
     }
 }

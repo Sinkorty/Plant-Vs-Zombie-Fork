@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sun : MonoBehaviour
 {
@@ -16,26 +18,46 @@ public class Sun : MonoBehaviour
     private float fallingTimerMax;
     private float fallingSpeed;
 
+    [Header("Picking Up Params")]
+    [SerializeField] private float interpolation = 0.8f;
+    [SerializeField] private float disappearMinDistance = 0.2f;
+
+    [Header("Falling Down Params")]
+    [SerializeField] private float sunFallingDownSpeedMin = 0.03f;
+    [SerializeField] private float sunFallingDownSpeedMax = 0.06f;
+    [SerializeField] private float sunFallingDownTimeMin = 5;
+    [SerializeField] private float sunFallingDownTimeMax = 8;
+
+    //[Header("Scene Ref")]
+    private Transform pickingUpEndPoint;    // 该引用通过SunGenerationManager来获取
+    private Button button;
+
     private State currentState;
 
     private void Awake()
     {
         fallingTimer = -1;
         currentState = State.Idle;
+        button = GetComponent<Button>();
+        button.onClick.AddListener(OnClick);
+    }
+    private void Start()
+    {
+        pickingUpEndPoint = SunGenerationManager.Instance.GetPickupEndPoint();
     }
     private void Update()
     {
         switch (currentState)
         {
-            case State.Idle:
-                break;
             case State.FallingDown:
                 FallingDownUpdateLogic();
+                break;
+            case State.PickingUp:
+                PickingUpUpdateLogic();
                 break;
             default:
                 break;
         }
-
     }
     private void FallingDownUpdateLogic()
     {
@@ -49,20 +71,36 @@ public class Sun : MonoBehaviour
             }
         }
     }
-    private void OnMouseOver()
+    private void PickingUpUpdateLogic()
     {
-        if (Input.GetMouseButtonDown(0))
+        Vector3 pickingUpEndPos = pickingUpEndPoint.position;
+
+        Vector3 pos = Vector3.Lerp(gameObject.transform.position, pickingUpEndPos, interpolation * Time.deltaTime);
+        gameObject.transform.position = pos;
+
+        if (Vector3.Distance(gameObject.transform.position, pickingUpEndPos) < disappearMinDistance)
         {
-            currentState = State.PickingUp;
+            Destroy(gameObject);
         }
     }
-    public void StartFallDown(float fallingTime, float fallingSpeed)
+    private void OnClick()
     {
-        fallingTimerMax = fallingTime;
-        this.fallingSpeed = fallingSpeed;
+        currentState = State.PickingUp;
+    }
+    //private void OnMouseOver()
+    //{
+    //    if (Input.GetMouseButtonDown(0))
+    //    {
+    //        currentState = State.PickingUp;
+    //    }
+    //}
+    public void StartFallDown()
+    {
         fallingTimer = fallingTimerMax; // 启用计时
-
         currentState = State.FallingDown;
+
+        fallingTimerMax = UnityEngine.Random.Range(sunFallingDownTimeMin, sunFallingDownTimeMax);
+        fallingSpeed = UnityEngine.Random.Range(sunFallingDownSpeedMin, sunFallingDownSpeedMax);
     }
     public bool IsFalling() => currentState == State.FallingDown;
     public bool IsPickingUp() => currentState == State.PickingUp;
