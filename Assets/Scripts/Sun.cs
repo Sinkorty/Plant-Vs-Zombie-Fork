@@ -14,7 +14,7 @@ public class Sun : MonoBehaviour
         PickingUp,
     }
 
-    private float fallingTimer; // -1表示停止计时
+    [SerializeField] private float fallingTimer; // -1表示停止计时
     private float fallingTimerMax;
     private float fallingSpeed;
 
@@ -61,6 +61,7 @@ public class Sun : MonoBehaviour
     }
     private void FallingDownUpdateLogic()
     {
+        print(fallingTimer);
         if (fallingTimer > 0)
         {
             fallingTimer -= Time.deltaTime;
@@ -96,11 +97,12 @@ public class Sun : MonoBehaviour
     //}
     public void StartFallDown()
     {
-        fallingTimer = fallingTimerMax; // 启用计时
-        currentState = State.FallingDown;
-
         fallingTimerMax = UnityEngine.Random.Range(sunFallingDownTimeMin, sunFallingDownTimeMax);
         fallingSpeed = UnityEngine.Random.Range(sunFallingDownSpeedMin, sunFallingDownSpeedMax);
+
+        fallingTimer = fallingTimerMax; // 启用计时
+        currentState = State.FallingDown;
+        print(fallingTimer);
     }
     public bool IsFalling() => currentState == State.FallingDown;
     public bool IsPickingUp() => currentState == State.PickingUp;
