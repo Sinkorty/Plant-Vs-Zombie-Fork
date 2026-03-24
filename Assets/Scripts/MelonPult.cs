@@ -13,7 +13,9 @@ public class MelonPult : MonoBehaviour, IPlant
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private MelonPultVisual melonPultVisual;
 
-    private Transform target;
+    private Transform target; // 要打的目标 TODO：替换为 IZombie
+    [SerializeField] private GridCell currentGridCell; // 所在的 GridCell
+
     private float pultTimer;
     private float pultTimerMax = 3f;
 
@@ -48,17 +50,20 @@ public class MelonPult : MonoBehaviour, IPlant
         OnBeforeLaunch?.Invoke(this, EventArgs.Empty);
         Debug.Log("Pult");
     }
-
-    public void SetTarget(Transform targetTransform)
-    {
-        target = targetTransform;
-    }
-    public bool HasTarget() => target != null;
-
-    public void GenerateBullet()
+    private void GenerateBullet()
     {
         Transform melonBulletTransform = Instantiate(melonBulletPrefab);
         PultBullect melonBullet = melonBulletTransform.GetComponent<PultBullect>();
         melonBullet.Initialize(bulletSpawnPoint.position, target.position);
     }
+
+    public void SetTarget(Transform targetTransform)
+    {
+        target = targetTransform;
+    }
+    public void SetGridCell(GridCell gridCell)
+    {
+        currentGridCell = gridCell;
+    }
+    public bool HasTarget() => target != null;
 }

@@ -61,7 +61,7 @@ public class Sun : MonoBehaviour
     }
     private void FallingDownUpdateLogic()
     {
-        print(fallingTimer);
+        //print(fallingTimer);
         if (fallingTimer > 0)
         {
             fallingTimer -= Time.deltaTime;
