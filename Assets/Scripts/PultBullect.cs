@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class PultBullect : MonoBehaviour
 {
+    //TODO: 应该放在 OnCollide 的时候调用
     public event EventHandler OnPultHit;
 
     [SerializeField] private float height = 2f;
@@ -19,6 +20,17 @@ public class PultBullect : MonoBehaviour
 
     private bool isFinished = false;
     private bool isInitialized = false;
+
+    private void Awake()
+    {
+        OnPultHit += PultBullect_OnPultHit;
+    }
+
+    // 自己订阅该消息，主要用来销毁自己
+    private void PultBullect_OnPultHit(object sender, EventArgs e)
+    {
+        Destroy(gameObject);
+    }
 
     private void Update()
     {

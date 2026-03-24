@@ -18,7 +18,7 @@ public class MelonPultVisual : MonoBehaviour
     }
     private void Start()
     {
-        melonPult.OnPulted += MelonPult_OnPulted;
+        melonPult.OnBeforeLaunch += MelonPult_OnPulted;
     }
 
     private void MelonPult_OnPulted(object sender, System.EventArgs e)

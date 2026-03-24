@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MelonPult : MonoBehaviour, IPlant
 {
-    public event EventHandler OnPulted;
+    public event EventHandler OnBeforeLaunch;
 
     [SerializeField] private PlantSO plantSO;
     [SerializeField] private Transform melonBulletPrefab;
@@ -45,9 +45,8 @@ public class MelonPult : MonoBehaviour, IPlant
     }
     private void Pult()
     {
-        OnPulted?.Invoke(this, EventArgs.Empty);
+        OnBeforeLaunch?.Invoke(this, EventArgs.Empty);
         Debug.Log("Pult");
-
     }
 
     public void SetTarget(Transform targetTransform)
