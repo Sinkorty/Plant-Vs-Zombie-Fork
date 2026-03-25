@@ -14,5 +14,5 @@ public class PlantSO : ScriptableObject
 
     [Header("Basic Params")]
     public float cooldownTimerMax;
-    public float sunCost;
+    public int sunCost;
 }

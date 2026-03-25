@@ -55,6 +55,9 @@ public class GridCellController : MonoBehaviour
         Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab); // TODO: 根据seedbank选中的卡槽来生成
         melonPultPlantTransform.position = transform.position;
 
+        // 减少阳光
+        gameModel.SunAmount -= model.PlantSO.sunCost;
+
         GridMapController.Instance.AnyGridCellPlanted(new GridMapController.OnAnyGridCellPlantedEventArgs { plantSO = model.PlantSO });
     }
 
