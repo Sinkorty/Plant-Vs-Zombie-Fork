@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameModel
 {
-    // === Selected Plant === 
+    // Selected Plant
     private PlantSO selectedPlant;
     public PlantSO SelectedPlant
     {
@@ -24,7 +24,25 @@ public class GameModel
     }
     public bool HasSelectedPlant() => selectedPlant != null;
 
-    // =======================
+
+    // Sun Amount
+    private int sunAmount;
+    public int SunAmount
+    {
+        get => sunAmount;
+        set
+        {
+            sunAmount = Mathf.Clamp(value, 0, 9999);
+            OnSunAmountChanged?.Invoke();
+        }
+    }
+    public void IncreaseSunAmountBy25() => SunAmount += 25;
+    public void IncreaseSunAmountBy15() => SunAmount += 15;
+    public event Action OnSunAmountChanged;
+
+
+
+    // Other Models
 
     public PlantGridMapModel PlantGridMapModel { get; private set; }
 

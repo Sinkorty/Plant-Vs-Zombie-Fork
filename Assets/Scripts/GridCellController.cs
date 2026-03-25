@@ -12,14 +12,14 @@ public class GridCellController : MonoBehaviour
     // 简单实现好了
     private void OnMouseEnter()
     {
-        if (gameModel.HasSelectedPlant())
+        if (!model.HasPlant() && gameModel.HasSelectedPlant())
         {
             GridMapGhostVisual.Instance.Show(gameModel.SelectedPlant, this);
         }
     }
     private void OnMouseExit()
     {
-        if (gameModel.HasSelectedPlant())
+        if (!model.HasPlant() && gameModel.HasSelectedPlant())
         {
             GridMapGhostVisual.Instance.Hide();
         }
@@ -31,7 +31,7 @@ public class GridCellController : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (!model.HasPlant())
+        if (gameModel.HasSelectedPlant() && !model.HasPlant())
         {
             SpawnPlant();
         }
@@ -46,6 +46,12 @@ public class GridCellController : MonoBehaviour
     //}
     private void SpawnPlant()
     {
+        // 如果有植物了，就不种
+        if (model.HasPlant())
+        {
+            return;
+        }
+        model.PlantSO = gameModel.SelectedPlant;
         Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab); // TODO: 根据seedbank选中的卡槽来生成
         melonPultPlantTransform.position = transform.position;
     }

@@ -7,9 +7,11 @@ public class MelonPult : MonoBehaviour, IPlant
 {
     public event EventHandler OnBeforeLaunch;
 
+    [Header("Config Ref")]
     [SerializeField] private PlantSO plantSO;
     [SerializeField] private Transform melonBulletPrefab;
 
+    [Header("Scene Ref")]
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private MelonPultVisual melonPultVisual;
 
@@ -52,7 +54,8 @@ public class MelonPult : MonoBehaviour, IPlant
     }
     private void GenerateBullet()
     {
-        Transform melonBulletTransform = Instantiate(melonBulletPrefab);
+        Transform melonBulletTransform = Instantiate(melonBulletPrefab); // 生成
+        // 初始化
         PultBullect melonBullet = melonBulletTransform.GetComponent<PultBullect>();
         melonBullet.Initialize(bulletSpawnPoint.position, target.position);
     }

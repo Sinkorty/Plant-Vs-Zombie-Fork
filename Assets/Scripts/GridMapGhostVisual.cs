@@ -51,6 +51,7 @@ public class GridMapGhostVisual : MonoBehaviour
     }
     public void Hide()
     {
+        if (currentGhost == null) return;
         currentGhost.gameObject.SetActive(false);
     }
 }

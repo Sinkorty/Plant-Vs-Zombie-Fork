@@ -13,6 +13,16 @@ public class GridCellModel
         get => gridPosition;
         private set => gridPosition = value;
     }
+    public PlantSO PlantSO
+    {
+        get => plantSO;
+        set
+        {
+            plantSO = value;
+        }
+    }
+
+
     public GridCellModel(Vector2Int gridPosition)
     {
         this.gridPosition = gridPosition;
