@@ -40,14 +40,28 @@ public class GameModel
     public void IncreaseSunAmountBy15() => SunAmount += 15;
     public event Action OnSunAmountChanged;
 
+    // 在SeedBank中选择的植物列表
+    private List<PlantSO> seedBankPlantList;
+    public void AddPlantToSeedBank(PlantSO plantSO)
+    {
+        if (seedBankPlantList.Contains(plantSO))
+        {
+            Debug.LogError("Already have plantSO: " + plantSO.name);
+            return;
+        }
+        seedBankPlantList.Add(plantSO);
+    }
+    public PlantSO[] GetPlantSOArrayFromSeedBank() => seedBankPlantList.ToArray();
+    public PlantSO GetPlantSOFromSeedBankById(int bankId) => seedBankPlantList[bankId];
 
 
     // Other Models
 
-    public PlantGridMapModel PlantGridMapModel { get; private set; }
+    public GridMapModel PlantGridMapModel { get; private set; }
 
     public GameModel()
     {
-        PlantGridMapModel = new PlantGridMapModel();
+        PlantGridMapModel = new GridMapModel();
+        seedBankPlantList = new List<PlantSO>();
     }
 }

@@ -27,7 +27,7 @@ public class GridCellController : MonoBehaviour
     private void Start()
     {
         model = new GridCellModel(gridPosition);
-        gameModel = GameManager.Instance.GetGameModel();
+        gameModel = GameManager.Instance.GetModel();
     }
     private void OnMouseDown()
     {
@@ -54,6 +54,8 @@ public class GridCellController : MonoBehaviour
         model.PlantSO = gameModel.SelectedPlant;
         Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab); // TODO: 根据seedbank选中的卡槽来生成
         melonPultPlantTransform.position = transform.position;
+
+        GridMapController.Instance.AnyGridCellPlanted(new GridMapController.OnAnyGridCellPlantedEventArgs { plantSO = model.PlantSO });
     }
 
     public int GetRow() => gridPosition.x;

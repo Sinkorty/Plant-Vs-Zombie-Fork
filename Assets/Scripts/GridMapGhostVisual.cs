@@ -18,11 +18,33 @@ public class GridMapGhostVisual : MonoBehaviour
         }
         Instance = this;
     }
+    private void Start()
+    {
+        GridMapController.Instance.OnAnyGridCellPlanted += GridMapManager_OnAnyGridCellPlanted;
+    }
 
+    // 如果种下了植物，则需要隐藏一次GridMapGhost
+    private void GridMapManager_OnAnyGridCellPlanted(object sender, GridMapController.OnAnyGridCellPlantedEventArgs e)
+    {
+        Hide();
+    }
+    private void Update()
+    {
+        // 按下右键也需要隐藏，原则上右键取消选择了
+        if (Input.GetMouseButtonDown(1))
+        {
+            Hide();
+        }
+    }
     private Transform MakeGhostFromPlantSO(PlantSO plantSO)
     {
         Transform ghostTransform = Instantiate(plantSO.visualPrefab);
-        ghostTransform.GetComponent<Animator>().enabled = false;
+        //ghostTransform.GetComponent<Animator>().enabled = false;
+        if (ghostTransform.TryGetComponent(out Animator animator))
+        {
+            animator.enabled = false;
+        }
+
         //ghostTransform.transform.position = transform.position; // TODO: 晚点要改成对应种类的植物对应的种植锚点
         foreach (var renderer in ghostTransform.GetComponentsInChildren<SpriteRenderer>())
         {

@@ -82,7 +82,7 @@ public class Sun : MonoBehaviour
         if (Vector3.Distance(gameObject.transform.position, pickingUpEndPos) < disappearMinDistance)
         {
             // 成功捡起来了
-            GameManager.Instance.GetGameModel().IncreaseSunAmountBy25();
+            GameManager.Instance.GetModel().IncreaseSunAmountBy25();
             Destroy(gameObject);
         }
     }

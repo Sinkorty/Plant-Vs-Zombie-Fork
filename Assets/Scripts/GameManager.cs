@@ -19,5 +19,5 @@ public class GameManager : MonoBehaviour
         gameModel = new GameModel();
     }
 
-    public GameModel GetGameModel() => gameModel;
+    public GameModel GetModel() => gameModel;
 }

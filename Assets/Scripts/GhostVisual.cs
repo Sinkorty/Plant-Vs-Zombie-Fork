@@ -8,7 +8,7 @@ public class GhostVisual : MonoBehaviour
 
     private void Start()
     {
-        GameModel gameModel = GameManager.Instance.GetGameModel();
+        GameModel gameModel = GameManager.Instance.GetModel();
         gameModel.OnSelectedPlantChanged += GameModel_OnSelectedPlantChanged;
     }
 
@@ -33,7 +33,13 @@ public class GhostVisual : MonoBehaviour
     private Transform MakeGhostFromPlantSO(PlantSO plantSO)
     {
         Transform currentGhost = Instantiate(plantSO.visualPrefab);
-        currentGhost.GetComponent<Animator>().enabled = false;
+        //currentGhost.GetComponent<Animator>().enabled = false;
+        if (currentGhost.TryGetComponent(out Animator animator))
+        {
+            animator.enabled = false;
+        }
+
+
         currentGhost.SetParent(transform);
         currentGhost.transform.localPosition = Vector3.zero;
         foreach (var renderer in currentGhost.GetComponentsInChildren<SpriteRenderer>())

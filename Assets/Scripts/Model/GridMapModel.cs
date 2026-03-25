@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantGridMapModel
+public class GridMapModel
 {
     private Dictionary<Vector2Int, GridCellModel> plantGridMap;
 
-    public PlantGridMapModel()
+    public GridMapModel()
     {
         plantGridMap = new Dictionary<Vector2Int, GridCellModel>();
     }

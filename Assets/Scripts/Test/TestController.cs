@@ -9,7 +9,11 @@ public class TestController : MonoBehaviour
 
     [SerializeField] private MelonPult melonPult;
     [SerializeField] private Transform targetTranfrom;
-    [SerializeField] private PlantSO testPlantSO;
+    [SerializeField] private PlantSO melonPultPlantSO;
+    [SerializeField] private PlantSO cornPultPlantSO;
+
+
+    [SerializeField] private SeedBankUI seedBankUI; // 测试用，随时能删
 
     private Dictionary<Vector2Int, PlantSO> plantGridMap; // 相对位置 -> 植物SO
 
@@ -21,6 +25,10 @@ public class TestController : MonoBehaviour
     private void Start()
     {
         //GhostVisual.Instance.Show(testPlantSO);
+        GameManager.Instance.GetModel().AddPlantToSeedBank(melonPultPlantSO);
+        GameManager.Instance.GetModel().AddPlantToSeedBank(cornPultPlantSO);
+
+        seedBankUI.UpdateVisual();
     }
     private void Update()
     {
@@ -30,14 +38,7 @@ public class TestController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            if (GameManager.Instance.GetGameModel().SelectedPlant == null)
-            {
-                GameManager.Instance.GetGameModel().SelectedPlant = testPlantSO;
-            }
-            else
-            {
-                GameManager.Instance.GetGameModel().SelectedPlant = null;
-            }
+            seedBankUI.UpdateVisual();
         }
     }
 }

@@ -22,13 +22,12 @@ public class GridCellModel
         }
     }
 
-
     public GridCellModel(Vector2Int gridPosition)
     {
         this.gridPosition = gridPosition;
 
         // ×¢²á¸øGridMaopModel
-        PlantGridMapModel plantGridMapModel = GameManager.Instance.GetGameModel().PlantGridMapModel;
+        GridMapModel plantGridMapModel = GameManager.Instance.GetModel().PlantGridMapModel;
         plantGridMapModel.Register(this);
     }
     public int GetLine() => GridPosition.y;
