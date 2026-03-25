@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// ÉúÃüÖÜÆÚ£ºGameScene
 public class GridMapManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform gridMapTransform;
+
+    private Dictionary<Vector2Int, GridCell> plantGridMap;
+
+    private void Awake()
     {
-        
+        plantGridMap = new Dictionary<Vector2Int, GridCell>();
+        ResetPlantGridMap();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ResetPlantGridMap()
     {
-        
+        plantGridMap.Clear();
+        foreach (var gridCell in gridMapTransform.GetComponentsInChildren<GridCell>())
+        {
+            plantGridMap[gridCell.GetGridPosition()] = gridCell;
+        }
     }
 }

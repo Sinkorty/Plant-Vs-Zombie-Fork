@@ -57,7 +57,8 @@ public class GridCell : MonoBehaviour
     }
     private void SpawnPlant()
     {
-        Transform melonPultPlantTransform = Instantiate(melonPultPlantSO.prefab);
+        Transform melonPultPlantTransform = Instantiate(melonPultPlantSO.prefab); // TODO: 根据seedbank选中的卡槽来生成
+
         melonPultPlantTransform.position = transform.position;
     }
     // 根据GhostObject的Transform来制作属于自己的Ghost
@@ -75,4 +76,5 @@ public class GridCell : MonoBehaviour
 
     public int GetRow() => gridPosition.x;
     public int GetLine() => gridPosition.y;
+    public Vector2Int GetGridPosition() => gridPosition;
 }

@@ -14,7 +14,7 @@ public class MelonPult : MonoBehaviour, IPlant
     [SerializeField] private MelonPultVisual melonPultVisual;
 
     private Transform target; // 要打的目标 TODO：替换为 IZombie
-    [SerializeField] private GridCell currentGridCell; // 所在的 GridCell
+    [SerializeField] private GridCell currentGridCell; // 所在的 GridCell,TODO: 到时候把序列化去掉，这个是用来测试的
 
     private float pultTimer;
     private float pultTimerMax = 3f;
