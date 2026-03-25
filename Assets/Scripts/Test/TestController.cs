@@ -20,13 +20,24 @@ public class TestController : MonoBehaviour
     }
     private void Start()
     {
-        GhostObject.Instance.Show(testPlantSO);
+        //GhostVisual.Instance.Show(testPlantSO);
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             melonPult.SetTarget(targetTranfrom);
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            if (GameManager.Instance.GetGameModel().SelectedPlant == null)
+            {
+                GameManager.Instance.GetGameModel().SelectedPlant = testPlantSO;
+            }
+            else
+            {
+                GameManager.Instance.GetGameModel().SelectedPlant = null;
+            }
         }
     }
 }
