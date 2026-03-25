@@ -102,7 +102,7 @@ public class Sun : MonoBehaviour
 
         fallingTimer = fallingTimerMax; // ÆôÓÃ¼ÆÊ±
         currentState = State.FallingDown;
-        print(fallingTimer);
+        //print(fallingTimer);
     }
     public bool IsFalling() => currentState == State.FallingDown;
     public bool IsPickingUp() => currentState == State.PickingUp;

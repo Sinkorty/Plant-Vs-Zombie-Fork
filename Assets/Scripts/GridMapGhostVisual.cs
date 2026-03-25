@@ -5,47 +5,25 @@ using static UnityEngine.GraphicsBuffer;
 
 public class GridMapGhostVisual : MonoBehaviour
 {
-    private Transform currentGhost; // 核心，需要ghost显示的游戏物体
+    public static GridMapGhostVisual Instance { get; private set; }
 
-    //private void Awake()
-    //{
-    //    if (Instance != null)
-    //    {
-    //        Debug.Log("Multiple instance err!");
-    //        return;
-    //    }
-    //    Instance = this;
-    //}
+    private Transform currentGhost;
 
-    private void Start()
+    private void Awake()
     {
-        GameModel gameModel = GameManager.Instance.GetGameModel();
-        gameModel.OnSelectedPlantChanged += GameModel_OnSelectedPlantChanged;
-    }
-
-    private void GameModel_OnSelectedPlantChanged(object sender, GameModel.OnSelectedPlantChangedEventArgs e)
-    {
-        if (e.after != null) // 开始显示
+        if (Instance != null)
         {
-            Show(e.after);
+            Debug.LogError("Multiple Instance");
+            return;
         }
-        else
-        {
-            Hide();
-        }
-    }
-
-    private void Update()
-    {
-        Vector2 mousePositionOverworld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mousePositionOverworld;
+        Instance = this;
     }
 
     private Transform MakeGhostFromPlantSO(PlantSO plantSO)
     {
         Transform ghostTransform = Instantiate(plantSO.visualPrefab);
         ghostTransform.GetComponent<Animator>().enabled = false;
-        ghostTransform.transform.position = transform.position; // TODO: 晚点要改成对应种类的植物对应的种植锚点
+        //ghostTransform.transform.position = transform.position; // TODO: 晚点要改成对应种类的植物对应的种植锚点
         foreach (var renderer in ghostTransform.GetComponentsInChildren<SpriteRenderer>())
         {
             Color color = renderer.color;
@@ -57,7 +35,7 @@ public class GridMapGhostVisual : MonoBehaviour
         return ghostTransform;
     }
 
-    private void Show(PlantSO plantSO)
+    public void Show(PlantSO plantSO, GridCellController gridCellController)
     {
         // 销毁原来的Ghost物体，替换为新的
         Transform currentGhost = MakeGhostFromPlantSO(plantSO);
@@ -65,10 +43,13 @@ public class GridMapGhostVisual : MonoBehaviour
         {
             Destroy(this.currentGhost.gameObject);
         }
+
+        currentGhost.transform.position = gridCellController.transform.position;
+
         this.currentGhost = currentGhost;
         this.currentGhost.gameObject.SetActive(true);
     }
-    private void Hide()
+    public void Hide()
     {
         currentGhost.gameObject.SetActive(false);
     }

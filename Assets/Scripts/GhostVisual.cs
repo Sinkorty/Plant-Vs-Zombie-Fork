@@ -4,19 +4,7 @@ using UnityEngine;
 
 public class GhostVisual : MonoBehaviour
 {
-    //public static GhostVisual Instance { get; private set; }
-
     private Transform currentGhost; // 核心，需要ghost显示的游戏物体
-
-    //private void Awake()
-    //{
-    //    if (Instance != null)
-    //    {
-    //        Debug.Log("Multiple instance err!");
-    //        return;
-    //    }
-    //    Instance = this;
-    //}
 
     private void Start()
     {
@@ -42,11 +30,6 @@ public class GhostVisual : MonoBehaviour
         transform.position = mousePositionOverworld;
     }
 
-    /// <summary>
-    /// 将对应的PlantSO制作成Ghost对象
-    /// </summary>
-    /// <param name="plantSO"></param>
-    /// <returns></returns>
     private Transform MakeGhostFromPlantSO(PlantSO plantSO)
     {
         Transform currentGhost = Instantiate(plantSO.visualPrefab);
@@ -75,10 +58,4 @@ public class GhostVisual : MonoBehaviour
     {
         currentGhost.gameObject.SetActive(false);
     }
-
-    //public Transform GetCurrentGhostObject()
-    //{
-    //    return currentGhost;
-    //}
-    //public bool HasGhost() => currentGhost != null;
 }

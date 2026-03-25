@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameModel
 {
+    // === Selected Plant === 
     private PlantSO selectedPlant;
     public PlantSO SelectedPlant
     {
@@ -20,5 +21,15 @@ public class GameModel
     {
         public PlantSO before;
         public PlantSO after;
+    }
+    public bool HasSelectedPlant() => selectedPlant != null;
+
+    // =======================
+
+    public PlantGridMapModel PlantGridMapModel { get; private set; }
+
+    public GameModel()
+    {
+        PlantGridMapModel = new PlantGridMapModel();
     }
 }
