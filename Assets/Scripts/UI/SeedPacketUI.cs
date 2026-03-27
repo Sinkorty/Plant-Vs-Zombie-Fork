@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 只要Init之后就能自行显示
 public class SeedPacketUI : MonoBehaviour
 {
     [SerializeField] private Image cooldownFillingImage;
@@ -66,8 +65,6 @@ public class SeedPacketUI : MonoBehaviour
 
     private void Update()
     {
-        if (!isInitialized) return;
-
         // 计时
         if (cooldownTimer > 0)
         {
@@ -86,10 +83,13 @@ public class SeedPacketUI : MonoBehaviour
         }
 
         // 填充图像的显示
-        uninteratableFillingImage.gameObject.SetActive(!isAffordable || isSelecting);
+        //uninteratableFillingImage.gameObject.SetActive(!isAffordable || isSelecting);
+        uninteratableFillingImage.gameObject.SetActive(!CanSelect() || isSelecting);
     }
+
     private bool IsCoolingDown() => cooldownTimer != 0;
     private bool CanSelect() => !IsCoolingDown() && isAffordable;
+
     public void Init(int bankId)
     {
         plantSO = GameManager.Instance.GetModel().GetPlantSOFromSeedBankById(bankId);
