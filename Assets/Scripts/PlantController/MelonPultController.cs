@@ -7,7 +7,7 @@ public class MelonPultController : MonoBehaviour, IPlantController
 {
     [Header("Config Ref")]
     [SerializeField] private PlantSO plantSO;
-    [SerializeField] private Transform melonBulletPrefab;
+    [SerializeField] private BulletSO bulletSO;
 
     [Header("Scene Ref")]
     [SerializeField] private Transform bulletSpawnPoint;
@@ -53,19 +53,32 @@ public class MelonPultController : MonoBehaviour, IPlantController
     }
     private void GenerateBullet()
     {
-        Transform melonBulletTransform = Instantiate(melonBulletPrefab); // 生成
-        // 初始化
-        PultBullect melonBullet = melonBulletTransform.GetComponent<PultBullect>();
-        melonBullet.Initialize(bulletSpawnPoint.position, target.position);
+        //Transform melonBulletTransform = Instantiate(melonBulletPrefab); // 生成
+        //// 初始化
+        //PultBullect melonBullet = melonBulletTransform.GetComponent<PultBullect>();
+        ////melonBullet.Initialize(bulletSpawnPoint.position, target.position);
+        //melonBullet.Initialize(bulletSO, bulletSpawnPoint, target.position);
+
+        PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
+        pultBullet.Initialize(bulletSO, bulletSpawnPoint, target.position);
     }
 
     public void SetTarget(Transform targetTransform)
     {
         target = targetTransform;
     }
+    public GridCellController GetGridCell()
+    {
+        return currentGridCell;
+    }
     public void SetGridCell(GridCellController gridCell)
     {
         currentGridCell = gridCell;
     }
     public bool HasTarget() => target != null;
+
+    public void SetTarget()
+    {
+        throw new NotImplementedException();
+    }
 }
