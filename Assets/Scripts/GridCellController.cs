@@ -52,12 +52,12 @@ public class GridCellController : MonoBehaviour
             return;
         }
         model.PlantSO = gameModel.SelectedPlant;
-        Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab); // TODO: 根据seedbank选中的卡槽来生成
+        Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab);
         melonPultPlantTransform.position = transform.position;
 
         // 减少阳光
         gameModel.SunAmount -= model.PlantSO.sunCost;
-
+        // 集中统一事件管理，这里主要是给 SeedPacketUI 解耦
         GridMapController.Instance.AnyGridCellPlanted(new GridMapController.OnAnyGridCellPlantedEventArgs { plantSO = model.PlantSO });
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 只需调用UpdateVisual就能实现SeedPacket的所有显示配置
 public class SeedBankUI : MonoBehaviour
 {
     [SerializeField] private Transform seedPacketUITemplate;

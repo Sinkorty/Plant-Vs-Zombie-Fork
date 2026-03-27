@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melonpult_Visual_Pult
+  m_Name: Launch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -80,7 +80,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melonpult_Visual
+  m_Name: Pult_Visual
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: launch
@@ -133,7 +133,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melonpult_Visual_Swing
+  m_Name: Swing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -252,7 +252,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 666945254817691720}
-    m_Position: {x: 290, y: 100, z: 0}
+    m_Position: {x: 300, y: 100, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -270,7 +270,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melonpult_blink
+  m_Name: Blink
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

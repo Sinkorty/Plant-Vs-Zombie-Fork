@@ -7,15 +7,12 @@ public class TestController : MonoBehaviour
 {
     public static TestController Instance { get; private set; }
 
-    [SerializeField] private MelonPult melonPult;
+    [SerializeField] private MelonPultController melonPult;
     [SerializeField] private Transform targetTranfrom;
     [SerializeField] private PlantSO melonPultPlantSO;
     [SerializeField] private PlantSO cornPultPlantSO;
 
-
     [SerializeField] private SeedBankUI seedBankUI; // 测试用，随时能删
-
-    private Dictionary<Vector2Int, PlantSO> plantGridMap; // 相对位置 -> 植物SO
 
     private void Awake()
     {
@@ -32,10 +29,10 @@ public class TestController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            melonPult.SetTarget(targetTranfrom);
-        }
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    melonPult.SetTarget(targetTranfrom);
+        //}
         if (Input.GetKeyDown(KeyCode.Y))
         {
             seedBankUI.UpdateVisual();

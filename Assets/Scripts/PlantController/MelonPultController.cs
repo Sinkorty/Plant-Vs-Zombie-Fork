@@ -3,27 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MelonPult : MonoBehaviour, IPlant
+public class MelonPultController : MonoBehaviour, IPlantController
 {
-    public event EventHandler OnBeforeLaunch;
-
     [Header("Config Ref")]
     [SerializeField] private PlantSO plantSO;
     [SerializeField] private Transform melonBulletPrefab;
 
     [Header("Scene Ref")]
     [SerializeField] private Transform bulletSpawnPoint;
-    [SerializeField] private MelonPultVisual melonPultVisual;
+    [SerializeField] private PlantVisual melonPultVisual;
 
     private Transform target; // 要打的目标 TODO：替换为 IZombie
-    [SerializeField] private GridCellController currentGridCell; // 所在的 GridCell,TODO: 到时候把序列化去掉，这个是用来测试的
+    private GridCellController currentGridCell; // 所在的 GridCell,TODO: 到时候把序列化去掉，这个是用来测试的
 
     private float pultTimer;
     private float pultTimerMax = 3f;
 
+    public event EventHandler OnLaunch;
+
     private void Start()
     {
-        melonPultVisual.OnWillLaunch += MelonPultVisual_OnWillLaunch;
+        melonPultVisual.OnProject += MelonPultVisual_OnWillLaunch;
     }
 
     // 动画回调，表示即将发射Melon
@@ -49,8 +49,7 @@ public class MelonPult : MonoBehaviour, IPlant
     }
     private void Pult()
     {
-        OnBeforeLaunch?.Invoke(this, EventArgs.Empty);
-        Debug.Log("Pult");
+        OnLaunch?.Invoke(this, EventArgs.Empty);
     }
     private void GenerateBullet()
     {

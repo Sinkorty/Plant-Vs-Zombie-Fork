@@ -46,7 +46,6 @@ public class SeedPacketUI : MonoBehaviour
 
     private void OnClick()
     {
-        print("click");
         if (!CanSelect()) return;
 
         if (isSelecting)
@@ -106,7 +105,6 @@ public class SeedPacketUI : MonoBehaviour
     public void Select()
     {
         if (gameModel.HasSelectedPlant()) return;
-        print("aaaa");
         isSelecting = true;
         gameModel.SelectedPlant = plantSO;
     }
