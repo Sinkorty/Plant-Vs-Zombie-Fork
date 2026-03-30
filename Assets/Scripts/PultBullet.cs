@@ -8,30 +8,38 @@ using UnityEngine;
 /// </summary>
 public class PultBullet : MonoBehaviour, IBullet
 {
-    //TODO: 应该放在 OnCollide 的时候调用
-    public event EventHandler OnPultHit;
-
     [SerializeField] private float height = 2f;
     [SerializeField] private float duration = 1f;
 
     private BulletSO bulletSO;
 
+    // 封装了碰撞检测的逻辑
+    private CollisionCheck collisionCheck;
+
     private Vector2 startPoint;
     private Vector2 endPoint;
     private float elapsedTime = 0f;
+    private int currentLine; // 记录是第几行的植物发射的子弹
 
     private bool isFinished = false;
     private bool isInitialized = false;
 
     private void Awake()
     {
-        OnPultHit += PultBullect_OnPultHit;
+        collisionCheck = GetComponent<CollisionCheck>();
+        collisionCheck.OnCollided += CollisionCheck_OnCollided;
     }
 
-    // 自己订阅该消息，主要用来销毁自己
-    private void PultBullect_OnPultHit(object sender, EventArgs e)
+    private void CollisionCheck_OnCollided(Transform obj)
     {
-        Destroy(gameObject);
+        // 返回的对象的LayerMask已经是僵尸了，此时判断是不是同一行的（因为投手植物的子弹是抛物线，可能会打到上几行的僵尸）
+        // 实际上是zombie的子物体HitCheckbox，因此要从最近的父级寻找ZombieController
+        ZombieController zombie = obj.GetComponentInParent<ZombieController>();
+        print($"currentLine: {currentLine}, zombie's line: {zombie.GetCurrentLine()}");
+        if (zombie.GetCurrentLine() == currentLine)
+        {
+            zombie.Hit(bulletSO.damage);
+        }
     }
 
     private void Update()
@@ -50,7 +58,6 @@ public class PultBullet : MonoBehaviour, IBullet
             float yOffset = parabolicT * height;
 
             transform.position = new Vector3(horizontalPos.x, horizontalPos.y + yOffset);
-
             elapsedTime += Time.deltaTime;
         }
         else
@@ -58,27 +65,33 @@ public class PultBullet : MonoBehaviour, IBullet
             if (!isFinished)
             {
                 isFinished = true;
-                // TODO： 放在击中的时候调用
-                OnPultHit?.Invoke(this, EventArgs.Empty);
+                DestroySelf();
             }
         }
+    }
+    private void DestroySelf()
+    {
+        Destroy(gameObject);
     }
     /// <summary>
     /// 初始化Bullet
     /// </summary>
-    public void Initialize(BulletSO bulletSO, Vector2 startPoint, Vector2 endPoint)
+    public void Initialize(BulletSO bulletSO, Vector2 startPoint, Vector2 endPoint, int currentLine)
     {
+        this.bulletSO = bulletSO; // FIX：忘记给bulletSO赋值了
         this.startPoint = startPoint;
         this.endPoint = endPoint;
+        this.currentLine = currentLine;
+
         transform.position = startPoint;
         isInitialized = true;
     }
     /// <summary>
     /// 高级的初始化Bullet, 根据起始点计算初始角度
     /// </summary>
-    public void Initialize(BulletSO bulletSO, Transform startPoint, Vector2 endPoint)
+    public void Initialize(BulletSO bulletSO, Transform startPoint, Vector2 endPoint, int currentLine)
     {
-        Initialize(bulletSO, startPoint.position, endPoint);
+        Initialize(bulletSO, startPoint.position, endPoint, currentLine);
         transform.eulerAngles = startPoint.eulerAngles;
     }
 }

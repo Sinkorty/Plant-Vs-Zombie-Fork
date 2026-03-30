@@ -14,7 +14,7 @@ public class MelonPultController : MonoBehaviour, IPlantController
     [SerializeField] private PlantVisual melonPultVisual;
 
     private Transform target; // 要打的目标 TODO：替换为 IZombie
-    private GridCellController currentGridCell; // 所在的 GridCell,TODO: 到时候把序列化去掉，这个是用来测试的
+    private GridCellController currentGridCell; // 所在的 GridCell
 
     private float pultTimer;
     private float pultTimerMax = 3f;
@@ -60,7 +60,7 @@ public class MelonPultController : MonoBehaviour, IPlantController
         //melonBullet.Initialize(bulletSO, bulletSpawnPoint, target.position);
 
         PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
-        pultBullet.Initialize(bulletSO, bulletSpawnPoint, target.position);
+        pultBullet.Initialize(bulletSO, bulletSpawnPoint, target.position, currentGridCell.GetLine());
     }
 
     public void SetTarget(Transform targetTransform)

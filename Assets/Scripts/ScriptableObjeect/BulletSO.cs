@@ -12,7 +12,7 @@ public class BulletSO : ScriptableObject
     public PultBulletData pultBulletData;
     public TraceBulletData traceBulletData;
 
-    public float damage;
+    public int damage;
     public bool hasSlowEffect;
     public bool isAreaDamage;
     public bool canImmobilized; // ª∆”Õ

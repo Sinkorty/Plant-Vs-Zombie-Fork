@@ -60,7 +60,7 @@ public class CornPultController : MonoBehaviour, IPlantController
         PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
         Vector2 targetEndPoint = new Vector2(6, 0);
 
-        pultBullet.Initialize(bulletSO, spawnPointTransform, targetEndPoint);
+        pultBullet.Initialize(bulletSO, spawnPointTransform, targetEndPoint, gridCellController.GetLine());
     }
 
     public void SetTarget()

@@ -52,8 +52,11 @@ public class GridCellController : MonoBehaviour
             return;
         }
         model.PlantSO = gameModel.SelectedPlant;
-        Transform melonPultPlantTransform = Instantiate(gameModel.SelectedPlant.prefab);
-        melonPultPlantTransform.position = transform.position;
+        Transform plantTransform = Instantiate(gameModel.SelectedPlant.prefab);
+        plantTransform.position = transform.position;
+
+        plantTransform.GetComponent<IPlantController>().SetGridCell(this); // fix
+
 
         // ¼õÉÙÑô¹â
         gameModel.SunAmount -= model.PlantSO.sunCost;
@@ -61,7 +64,7 @@ public class GridCellController : MonoBehaviour
         GridMapController.Instance.AnyGridCellPlanted(new GridMapController.OnAnyGridCellPlantedEventArgs { plantSO = model.PlantSO });
     }
 
-    public int GetRow() => gridPosition.x;
-    public int GetLine() => gridPosition.y;
+    public int GetRow() => gridPosition.y;
+    public int GetLine() => gridPosition.x;
     public Vector2Int GetGridPosition() => gridPosition;
 }
