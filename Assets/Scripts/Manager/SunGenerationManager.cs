@@ -56,7 +56,7 @@ public class SunGenerationManager : MonoBehaviour
         posToSpawn.y = Random.Range(bottomRightPoint.position.y, topLeftPoint.position.y);
         posToSpawn.z = 0f;
 
-        Sun sun = sunTransfrom.GetComponent<Sun>();
+        SunController sun = sunTransfrom.GetComponent<SunController>();
         sun.transform.position = posToSpawn;
 
         //float fallingTime = Random.Range(sunFallingDownTimeMin, sunFallingDownTimeMax);

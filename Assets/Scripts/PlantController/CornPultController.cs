@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CornPultController : MonoBehaviour, IPlantController
 {
-    public event EventHandler OnLaunch;
+    public event EventHandler OnLaunched;
 
     [Header("Basic Params")]
     [SerializeField][Range(0f, 1f)] private float butterChance = 0.2f;
@@ -14,15 +14,13 @@ public class CornPultController : MonoBehaviour, IPlantController
     [SerializeField] private BulletSO cornKerbalBulletSO;
     [SerializeField] private BulletSO ButterBulletSO;
 
+    [SerializeField] private PlantVisual plantVisual;
 
     private GridCellController gridCellController;
-
     private float pultTimer;
+    private Transform target;
 
-    public GridCellController GetGridCell() => gridCellController;
-    public void SetGridCell(GridCellController gridCellController) => this.gridCellController = gridCellController;
 
-    [SerializeField] private PlantVisual plantVisual;
     //[SerializeField] private IBullet cornBullet;
     //[SerializeField] private IBullet butterBullet
 
@@ -39,32 +37,40 @@ public class CornPultController : MonoBehaviour, IPlantController
             if (pultTimer < 0)
             {
                 pultTimer = pultTimerMax;
-                //if (HasTarget())
-                //{
-                //    Pult();
-                //}
-                // 给Visual调用的，当然其他也可以用
-                OnLaunch?.Invoke(this, EventArgs.Empty);
+                if (target != null)
+                {
+                    OnLaunched?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
-
+    // 生成子弹
     private void PlantVisual_OnProject(object sender, EventArgs e)
     {
-
         float random = UnityEngine.Random.Range(0f, 1f);
 
         // 概率投出黄油
         BulletSO bulletSO = random <= butterChance ? ButterBulletSO : cornKerbalBulletSO;
 
         PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
-        Vector2 targetEndPoint = new Vector2(6, 0);
 
-        pultBullet.Initialize(bulletSO, spawnPointTransform, targetEndPoint, gridCellController.GetLine());
+        pultBullet.Initialize(bulletSO,
+            startPoint: spawnPointTransform,
+            endPoint: target.transform.position,
+            currentLine: gridCellController.GetLine());
     }
 
-    public void SetTarget()
+    public GridCellController GetGridCell() => gridCellController;
+
+    public void SetGridCell(GridCellController gridCellController) => this.gridCellController = gridCellController;
+
+    public void SetTarget(IZombieController zombieController)
     {
-        throw new NotImplementedException();
+        if (zombieController == null)
+        {
+            target = null;
+            return;
+        }
+        target = (zombieController as MonoBehaviour).transform;
     }
 }

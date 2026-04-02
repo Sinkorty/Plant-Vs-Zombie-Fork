@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Sun : MonoBehaviour
+public class SunController : MonoBehaviour
 {
     public enum State
     {
@@ -13,13 +13,13 @@ public class Sun : MonoBehaviour
         FallingDown,
         PickingUp,
     }
-
+    //TODO: 用于调试，[serializeField]可删
     [SerializeField] private float fallingTimer; // -1表示停止计时
     private float fallingTimerMax;
     private float fallingSpeed;
 
     [Header("Picking Up Params")]
-    [SerializeField] private float interpolation = 0.8f;
+    [SerializeField] private float pickingUpSpeed = 0.8f;
     [SerializeField] private float disappearMinDistance = 0.2f;
 
     [Header("Falling Down Params")]
@@ -76,7 +76,7 @@ public class Sun : MonoBehaviour
     {
         Vector3 pickingUpEndPos = pickingUpEndPoint.position;
 
-        Vector3 pos = Vector3.Lerp(gameObject.transform.position, pickingUpEndPos, interpolation * Time.deltaTime);
+        Vector3 pos = Vector3.Lerp(gameObject.transform.position, pickingUpEndPos, pickingUpSpeed * Time.deltaTime);
         gameObject.transform.position = pos;
 
         if (Vector3.Distance(gameObject.transform.position, pickingUpEndPos) < disappearMinDistance)

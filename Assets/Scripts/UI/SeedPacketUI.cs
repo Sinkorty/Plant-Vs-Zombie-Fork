@@ -16,9 +16,9 @@ public class SeedPacketUI : MonoBehaviour
     private GameModel gameModel;
 
     private float cooldownTimer;
-    public bool isInitialized = false;
-    public bool isAffordable = false;
-    public bool isSelecting = false;
+    // TODO: 去掉public，just for test
+    private bool isAffordable = false;
+    private bool isSelecting = false;
 
     private PlantSO plantSO;
 
@@ -36,11 +36,11 @@ public class SeedPacketUI : MonoBehaviour
 
     private void GridMapManager_OnAnyGridCellPlanted(object sender, GridMapController.OnAnyGridCellPlantedEventArgs e)
     {
-        // 刚被种下的植物是不是当前卡槽对应的植物
+        // 刚被种下的植物是不是当前卡槽对应的植物，如果是，取消选择，并重置冷却
         if (e.plantSO == plantSO)
         {
-            // 如果是，取消选择
             Deselect();
+            RefreshCooldown();
         }
     }
 
@@ -70,24 +70,31 @@ public class SeedPacketUI : MonoBehaviour
             cooldownTimer -= Time.deltaTime;
             cooldownTimer = Mathf.Max(0, cooldownTimer);
         }
-        // 计算填充
-        float percentage = cooldownTimer / plantSO.cooldownTimerMax;
-        //print(cooldownTimer);
-        cooldownFillingImage.fillAmount = percentage;
+
 
         // 按键监听
         if (isSelecting && Input.GetMouseButtonDown(1)) //右键，取消，放回
         {
             Deselect();
         }
+    }
+    private void LateUpdate()
+    {
+        // 计算并填充冷却图像
+        float percentage = cooldownTimer / plantSO.cooldownTimerMax;
+        cooldownFillingImage.fillAmount = percentage;
 
-        // 填充图像的显示
-        //uninteratableFillingImage.gameObject.SetActive(!isAffordable || isSelecting);
+        // 不可交互 图像的显示
         uninteratableFillingImage.gameObject.SetActive(!CanSelect() || isSelecting);
     }
 
     private bool IsCoolingDown() => cooldownTimer != 0;
     private bool CanSelect() => !IsCoolingDown() && isAffordable;
+
+    private void RefreshCooldown()
+    {
+        cooldownTimer = plantSO.cooldownTimerMax;
+    }
 
     public void Init(int bankId)
     {
@@ -97,9 +104,11 @@ public class SeedPacketUI : MonoBehaviour
         cooldownFillingImage.gameObject.SetActive(true);
         uninteratableFillingImage.gameObject.SetActive(true);
 
+        // 0阳光cost的植物默认isAffordable设置为true
+        isAffordable = plantSO.sunCost == 0;
+
         //Only for test:
         cooldownTimer = plantSO.cooldownTimerMax;
-        isInitialized = true;
     }
     // 选择，不过会判断是否可以选择
     public void Select()

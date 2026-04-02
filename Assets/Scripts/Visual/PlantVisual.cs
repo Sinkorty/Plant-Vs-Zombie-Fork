@@ -24,7 +24,7 @@ public class PlantVisual : MonoBehaviour
     {
         if (plantControllerGameObject.TryGetComponent(out IPlantController plantController))
         {
-            plantController.OnLaunch += PlantController_OnPulted;
+            plantController.OnLaunched += PlantController_OnPulted;
         }
         else
         {

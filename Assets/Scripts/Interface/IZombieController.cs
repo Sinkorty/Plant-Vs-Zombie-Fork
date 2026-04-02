@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IZombieController
 {
-    public float GetCurrentMoveSpeed();
+
 }

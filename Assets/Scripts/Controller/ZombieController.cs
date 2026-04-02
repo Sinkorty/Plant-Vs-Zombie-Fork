@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZombieController : MonoBehaviour
+public class ZombieController : MonoBehaviour, ICharacter, IZombieController
 {
     [SerializeField] private ZombieSO zombieSO;
 
@@ -40,4 +40,6 @@ public class ZombieController : MonoBehaviour
 
     }
     public int GetCurrentLine() => model.gridLine;
+
+    public HealthModel GetHealthModel() => healthModel;
 }

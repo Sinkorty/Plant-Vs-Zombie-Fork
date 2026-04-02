@@ -7,5 +7,5 @@ using UnityEngine;
 /// </summary>
 public interface ICharacter
 {
-    public void Hit();
+    public HealthModel GetHealthModel();
 }

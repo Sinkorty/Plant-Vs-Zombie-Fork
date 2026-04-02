@@ -19,7 +19,7 @@ public class MelonPultController : MonoBehaviour, IPlantController
     private float pultTimer;
     private float pultTimerMax = 3f;
 
-    public event EventHandler OnLaunch;
+    public event EventHandler OnLaunched;
 
     private void Start()
     {
@@ -49,7 +49,7 @@ public class MelonPultController : MonoBehaviour, IPlantController
     }
     private void Pult()
     {
-        OnLaunch?.Invoke(this, EventArgs.Empty);
+        OnLaunched?.Invoke(this, EventArgs.Empty);
     }
     private void GenerateBullet()
     {
@@ -77,8 +77,13 @@ public class MelonPultController : MonoBehaviour, IPlantController
     }
     public bool HasTarget() => target != null;
 
-    public void SetTarget()
+    public void SetTarget(IZombieController zombieController)
     {
-        throw new NotImplementedException();
+        if (zombieController == null)
+        {
+            target = null;
+            return;
+        }
+        target = (zombieController as MonoBehaviour).transform;
     }
 }
