@@ -7,9 +7,9 @@ public class TestController : MonoBehaviour
 {
     public static TestController Instance { get; private set; }
 
-    [Header("Test for zombie hit")]
-    [SerializeField] private MelonPultController melonPult;
-    [SerializeField] private Transform targetTranfrom;
+    //[Header("Test for zombie hit")]
+    //[SerializeField] private MelonPultController melonPult;
+    //[SerializeField] private Transform targetTranfrom;
 
     [Header("Temp control on SeedBank")]
     [SerializeField] private PlantSO melonPultPlantSO;
@@ -41,10 +41,9 @@ public class TestController : MonoBehaviour
         //{
         //    seedBankUI.UpdateVisual();
         //}
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            melonPult.SetTarget(targetTranfrom);
-        }
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    melonPult.SetTarget(targetTranfrom);
+        //}
     }
 }
