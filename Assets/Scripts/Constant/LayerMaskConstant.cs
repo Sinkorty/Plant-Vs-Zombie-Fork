@@ -4,5 +4,7 @@ using UnityEngine;
 
 public static class LayerMaskConstant
 {
-    public const string ZOMBIE_HIT_CHECK_BOX = "ZombieHitCheckbox";
+    public const string ZOMBIE_HIT_CHECKBOX = "ZombieHitCheckbox";
+    public const string PLANT_CHECKBOX = "PlantCheckbox";
+
 }

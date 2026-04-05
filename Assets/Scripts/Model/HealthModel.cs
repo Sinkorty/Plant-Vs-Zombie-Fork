@@ -22,6 +22,7 @@ public class HealthModel
             OnHealthChanged?.Invoke(this, sharedOnHealthChangedEventArgs);
         }
     }
+    public int MaxHealth { get => maxHealth; }
     public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;
     public class OnHealthChangedEventArgs : EventArgs
     {

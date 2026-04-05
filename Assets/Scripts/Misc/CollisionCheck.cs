@@ -12,7 +12,7 @@ public class CollisionCheck : MonoBehaviour
     public event Action<Transform> OnCollided;
 
     [SerializeField] private LayerMask targetLayerMask;
-    [SerializeField] private float checkTimerMax;
+    [SerializeField] private float checkTimerMax = 0.2f;
 
     private Collider2D mCollider;
     private float checkTimer;

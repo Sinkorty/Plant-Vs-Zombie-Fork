@@ -22,7 +22,7 @@ public class PlantTargetFinding : MonoBehaviour
     private void Awake()
     {
         plantController = GetComponent<IPlantController>();
-        layerMaskFlag = LayerMask.GetMask(LayerMaskConstant.ZOMBIE_HIT_CHECK_BOX);
+        layerMaskFlag = LayerMask.GetMask(LayerMaskConstant.ZOMBIE_HIT_CHECKBOX);
         //hitArray = new RaycastHit2D[checkAmountMax];
     }
 

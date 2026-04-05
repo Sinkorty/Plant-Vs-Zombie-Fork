@@ -7,4 +7,5 @@ public class ZombieSO : ScriptableObject
 {
     public string zombieName;
     public int maxHealth;
+    public float moveSpeed;
 }

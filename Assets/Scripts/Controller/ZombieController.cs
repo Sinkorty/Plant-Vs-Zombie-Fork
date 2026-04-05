@@ -5,20 +5,51 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour, ICharacter, IZombieController
 {
+    public event EventHandler OnHit;
+    public event EventHandler OnDie;
+
     [SerializeField] private ZombieSO zombieSO;
+    [SerializeField] private CollisionCheck zombieHitboxCollsionCheck;
 
     private HealthModel healthModel;
     private ZombieModel model;
 
-    public event EventHandler OnHit;
-    public event EventHandler OnDie;
+    private bool isInitialized = false;
+    private bool isBiting = false;
+    private bool isDead = false;
 
     private void Awake()
     {
-        //int maxHealth = 20;
-        healthModel = new HealthModel(zombieSO.maxHealth);
+        Init(2);
+    }
+    private void Update()
+    {
+        if (!isInitialized) return;
+
+        // 执行移动
+        if (!isBiting && !isDead)
+        {
+            float speed = zombieSO.moveSpeed;
+            transform.position += Vector3.left * speed * Time.deltaTime;
+        }
+    }
+    public void Init(int gridLine)
+    {
         model = new ZombieModel { gridLine = 2 }; // TODO：Just for test
+        healthModel = new HealthModel(zombieSO.maxHealth);
+        OnHit -= ZombieController_OnHit;
         OnHit += ZombieController_OnHit;
+        zombieHitboxCollsionCheck.OnCollided -= ZombieHitboxCollsionCheck_OnCollided;
+        zombieHitboxCollsionCheck.OnCollided += ZombieHitboxCollsionCheck_OnCollided;
+
+        isInitialized = true;
+    }
+
+    // 当碰撞到植物 tag: PlantCheckbox
+    private void ZombieHitboxCollsionCheck_OnCollided(Transform obj)
+    {
+        IPlantController plantController = obj.GetComponentInParent<IPlantController>();
+        isBiting = true;
     }
 
     private void ZombieController_OnHit(object sender, EventArgs e)
@@ -30,16 +61,15 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
     {
         healthModel.Health -= damage;
         OnHit?.Invoke(this, EventArgs.Empty);
-        if (healthModel.Health == 0)
+        if (healthModel.Health <= 0)
         {
+            isDead = true;
             OnDie?.Invoke(this, EventArgs.Empty);
         }
-    }
-    public void Attack()
-    {
-
     }
     public int GetCurrentLine() => model.gridLine;
 
     public HealthModel GetHealthModel() => healthModel;
+
+
 }
