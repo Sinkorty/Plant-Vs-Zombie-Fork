@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 普通僵尸 Controller
+/// </summary>
 public class ZombieController : MonoBehaviour, ICharacter, IZombieController
 {
     public event EventHandler OnHit;
@@ -14,7 +17,9 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
     private HealthModel healthModel;
     private ZombieModel model;
 
+    // 不需要Model持有的数据
     private bool isInitialized = false;
+    private IPlantController targetPlant;
 
     private void Update()
     {
@@ -45,21 +50,30 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
         isInitialized = true;
     }
 
-    // 当碰撞到植物 tag: PlantCheckbox
+    // 当检测到面前有植物的时候调用（不止一次）
     private void ZombieHitboxCollsionCheck_OnCollided(Transform obj)
     {
         IPlantController plantController = obj.GetComponentInParent<IPlantController>();
-        //model.isBiting = true;
+        if (model.zombieState != ZombieState.Biting)
+        {
+            StartCoroutine(StartBiting());
+        }
+    }
+    // TODO: 先给植物实现血量，之后在实现这个
+    private IEnumerator StartBiting()
+    {
         model.zombieState = ZombieState.Biting;
+        yield return null;
     }
 
+    // 当受伤的时候调用（用于测试）
     private void ZombieController_OnHit(object sender, EventArgs e)
     {
         Debug.Log($"Hit! current Health: {healthModel.Health}");
     }
 
     /// <summary>
-    /// 僵尸受伤，用于给子弹调用
+    /// 让僵尸受伤，用于给子弹调用
     /// </summary>
     public void Hit(int damage)
     {
@@ -72,7 +86,8 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
             OnDie?.Invoke(this, EventArgs.Empty);
         }
     }
-    public int GetCurrentLine() => model.gridLine;
 
+    // 接口实现
+    public int GetCurrentLine() => model.gridLine;
     public HealthModel GetHealthModel() => healthModel;
 }

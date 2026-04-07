@@ -8,4 +8,10 @@ using UnityEngine;
 public interface ICharacter
 {
     public HealthModel GetHealthModel();
+
+    /// <summary>
+    /// 当受伤的时候调用
+    /// </summary>
+    /// <param name="damage"></param>
+    public void Hit(int damage);
 }

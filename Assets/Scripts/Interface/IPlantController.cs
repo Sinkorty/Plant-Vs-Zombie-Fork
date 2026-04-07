@@ -12,6 +12,7 @@ public interface IPlantController
     public event EventHandler OnLaunched;
 
     public GridCellController GetGridCell();
+
     public void SetGridCell(GridCellController gridCellController);
 
     //public Transform GetSpawnPointTransform();

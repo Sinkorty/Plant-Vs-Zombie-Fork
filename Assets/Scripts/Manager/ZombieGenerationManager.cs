@@ -10,6 +10,7 @@ public class ZombieGenerationManager : MonoBehaviour
 
     private void Update()
     {
+        // TODO: 按键响应生成僵尸 -> 自动生成
         if (Input.GetKeyDown(KeyCode.G))
         {
             GenerateZombie(Random.Range(1, 6));

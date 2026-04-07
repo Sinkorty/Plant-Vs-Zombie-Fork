@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MelonPultController : MonoBehaviour, IPlantController
+public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
 {
     [Header("Config Ref")]
     [SerializeField] private PlantSO plantSO;
@@ -16,14 +16,25 @@ public class MelonPultController : MonoBehaviour, IPlantController
     private Transform target; // 要打的目标 TODO：替换为 IZombie
     private GridCellController currentGridCell; // 所在的 GridCell
 
+    private HealthModel healthModel;
+
+
     private float pultTimer;
     private float pultTimerMax = 3f;
 
     public event EventHandler OnLaunched;
 
-    private void Start()
+    private void Awake()
+    {
+        healthModel = new HealthModel(plantSO.maxHealth);
+    }
+    private void OnEnable()
     {
         melonPultVisual.OnProject += MelonPultVisual_OnWillLaunch;
+    }
+    private void OnDisable()
+    {
+        melonPultVisual.OnProject -= MelonPultVisual_OnWillLaunch;
     }
 
     // 动画回调，表示即将发射Melon
@@ -87,4 +98,11 @@ public class MelonPultController : MonoBehaviour, IPlantController
         }
         target = (zombieController as MonoBehaviour).transform;
     }
+
+    public void Hit(int damage)
+    {
+        healthModel.Health -= damage;
+    }
+
+    public HealthModel GetHealthModel() => healthModel;
 }

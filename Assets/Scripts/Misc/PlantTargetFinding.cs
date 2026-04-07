@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Plant的寻路组件
+/// Plant的寻路组件，核心就是恰当的调用IPlantController.SetTarget()
 /// </summary>
 [RequireComponent(typeof(IPlantController))]
 public class PlantTargetFinding : MonoBehaviour

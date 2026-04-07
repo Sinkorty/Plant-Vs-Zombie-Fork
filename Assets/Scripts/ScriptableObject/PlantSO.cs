@@ -9,6 +9,8 @@ public class PlantSO : ScriptableObject
     public string plantName;
     public float cooldownTimerMax;
     public int sunCost;
+    public int maxHealth;
+
     [Header("References")]
     public Transform prefab;
     public Transform visualPrefab;
