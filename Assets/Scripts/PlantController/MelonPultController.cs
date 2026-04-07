@@ -60,7 +60,8 @@ public class MelonPultController : MonoBehaviour, IPlantController
         //melonBullet.Initialize(bulletSO, bulletSpawnPoint, target.position);
 
         PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
-        pultBullet.Initialize(bulletSO, bulletSpawnPoint, target.position, currentGridCell.GetLine());
+        print(currentGridCell.GetLine());
+        pultBullet.Init(bulletSO, bulletSpawnPoint, target.position, currentGridCell.GetLine());
     }
 
     public void SetTarget(Transform targetTransform)

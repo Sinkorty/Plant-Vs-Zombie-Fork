@@ -5,4 +5,5 @@ using UnityEngine;
 public class ZombieModel
 {
     public int gridLine;
+    public ZombieState zombieState;
 }

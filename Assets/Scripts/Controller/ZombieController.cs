@@ -15,8 +15,6 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
     private ZombieModel model;
 
     private bool isInitialized = false;
-    private bool isBiting = false;
-    private bool isDead = false;
 
     private void Awake()
     {
@@ -26,21 +24,27 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
     {
         if (!isInitialized) return;
 
-        // 执行移动
-        if (!isBiting && !isDead)
+        if (model.zombieState == ZombieState.Walking)
         {
             float speed = zombieSO.moveSpeed;
             transform.position += Vector3.left * speed * Time.deltaTime;
         }
     }
+    private void OnEnable()
+    {
+        zombieHitboxCollsionCheck.OnCollided += ZombieHitboxCollsionCheck_OnCollided;
+        OnHit += ZombieController_OnHit;
+    }
+    private void OnDisable()
+    {
+        zombieHitboxCollsionCheck.OnCollided -= ZombieHitboxCollsionCheck_OnCollided;
+        OnHit -= ZombieController_OnHit;
+    }
+    // 业务初始化
     public void Init(int gridLine)
     {
-        model = new ZombieModel { gridLine = 2 }; // TODO：Just for test
+        model = new ZombieModel { gridLine = gridLine };
         healthModel = new HealthModel(zombieSO.maxHealth);
-        OnHit -= ZombieController_OnHit;
-        OnHit += ZombieController_OnHit;
-        zombieHitboxCollsionCheck.OnCollided -= ZombieHitboxCollsionCheck_OnCollided;
-        zombieHitboxCollsionCheck.OnCollided += ZombieHitboxCollsionCheck_OnCollided;
 
         isInitialized = true;
     }
@@ -49,7 +53,8 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
     private void ZombieHitboxCollsionCheck_OnCollided(Transform obj)
     {
         IPlantController plantController = obj.GetComponentInParent<IPlantController>();
-        isBiting = true;
+        //model.isBiting = true;
+        model.zombieState = ZombieState.Biting;
     }
 
     private void ZombieController_OnHit(object sender, EventArgs e)
@@ -57,19 +62,21 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
         Debug.Log($"Hit! current Health: {healthModel.Health}");
     }
 
+    /// <summary>
+    /// 僵尸受伤，用于给子弹调用
+    /// </summary>
     public void Hit(int damage)
     {
         healthModel.Health -= damage;
         OnHit?.Invoke(this, EventArgs.Empty);
         if (healthModel.Health <= 0)
         {
-            isDead = true;
+            //model.isDead = true;
+            model.zombieState = ZombieState.Dying;
             OnDie?.Invoke(this, EventArgs.Empty);
         }
     }
     public int GetCurrentLine() => model.gridLine;
 
     public HealthModel GetHealthModel() => healthModel;
-
-
 }

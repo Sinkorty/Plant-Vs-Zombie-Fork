@@ -19,7 +19,7 @@ public class PultBullet : MonoBehaviour, IBullet
     private Vector2 startPoint;
     private Vector2 endPoint;
     private float elapsedTime = 0f;
-    private int currentLine; // 记录是第几行的植物发射的子弹
+    private int gridLine; // 记录是第几行的植物发射的子弹
 
     private bool isFinished = false;
     private bool isInitialized = false;
@@ -35,9 +35,10 @@ public class PultBullet : MonoBehaviour, IBullet
         // 返回的对象的LayerMask已经是僵尸了，此时判断是不是同一行的（因为投手植物的子弹是抛物线，可能会打到上几行的僵尸）
         // 实际上是zombie的子物体HitCheckbox，因此要从最近的父级寻找ZombieController
         ZombieController zombie = obj.GetComponentInParent<ZombieController>();
-        if (zombie.GetCurrentLine() == currentLine)
+        print("invoked");
+        if (zombie.GetCurrentLine() == gridLine)
         {
-            print($"currentLine: {currentLine}, zombie's line: {zombie.GetCurrentLine()}");
+            print($"currentLine: {gridLine}, zombie's line: {zombie.GetCurrentLine()}");
             zombie.Hit(bulletSO.damage);
             DestroySelf();
         }
@@ -75,14 +76,14 @@ public class PultBullet : MonoBehaviour, IBullet
         Destroy(gameObject);
     }
     /// <summary>
-    /// 初始化Bullet
+    /// 业务初始化Bullet
     /// </summary>
-    public void Initialize(BulletSO bulletSO, Vector2 startPoint, Vector2 endPoint, int currentLine)
+    public void Init(BulletSO bulletSO, Vector2 startPoint, Vector2 endPoint, int gridLine)
     {
-        this.bulletSO = bulletSO; // FIX：忘记给bulletSO赋值了
+        this.bulletSO = bulletSO;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.currentLine = currentLine;
+        this.gridLine = gridLine;
 
         transform.position = startPoint;
         isInitialized = true;
@@ -90,9 +91,9 @@ public class PultBullet : MonoBehaviour, IBullet
     /// <summary>
     /// 高级的初始化Bullet, 根据起始点计算初始角度
     /// </summary>
-    public void Initialize(BulletSO bulletSO, Transform startPoint, Vector2 endPoint, int currentLine)
+    public void Init(BulletSO bulletSO, Transform startPoint, Vector2 endPoint, int gridLine)
     {
-        Initialize(bulletSO, startPoint.position, endPoint, currentLine);
+        Init(bulletSO, startPoint.position, endPoint, gridLine);
         transform.eulerAngles = startPoint.eulerAngles;
     }
 }
