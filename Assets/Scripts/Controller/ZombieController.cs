@@ -16,10 +16,6 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
 
     private bool isInitialized = false;
 
-    private void Awake()
-    {
-        Init(2);
-    }
     private void Update()
     {
         if (!isInitialized) return;
