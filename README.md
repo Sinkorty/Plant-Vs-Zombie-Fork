@@ -1,2 +1,1 @@
-# MineSweep-Multiplayer-Unity
-A simple MineSweep Multiplayer game made with Unity
+A fan-made remake of the classic tower defense game **Plants vs. Zombies**, built from scratch using Unity. This project is a tribute to PopCap Games' masterpiece, rebuilt with modern Unity practices and enhanced features.
