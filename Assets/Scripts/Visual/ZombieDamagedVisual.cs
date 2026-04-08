@@ -9,17 +9,30 @@ public class ZombieDamagedVisual : MonoBehaviour
 {
     [SerializeField] private GameObject healthModelHolder;
 
+    [SerializeField] private DismemberVisual outerArmDismemberVisual;
+    [SerializeField] private DismemberVisual headDismemberVisual;
+
+    [SerializeField] private Transform headTransform;
     [SerializeField] private Transform outerArmTransform;
     [SerializeField] private Transform outerArmBoneTransform;
 
     private HealthModel healthModel;
 
-    private void Start()
+    private bool hasHeadDismembered;
+    private bool hasArmDismembered;
+
+    private void Update()
     {
-        healthModel = healthModelHolder.GetComponent<ICharacter>().GetHealthModel();
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            healthModel.Health -= 10;
+        }
     }
+
     private void OnEnable()
     {
+        // 这里把Start里初始化healthModel挪下来了，主要是因为OnEnable比Start先执行
+        healthModel = healthModelHolder.GetComponent<ICharacter>().GetHealthModel();
         healthModel.OnHealthChanged += HealthModel_OnHealthChanged;
     }
     private void OnDisable()
@@ -40,10 +53,23 @@ public class ZombieDamagedVisual : MonoBehaviour
     }
     private void DismemberHead()
     {
+        if (hasHeadDismembered) return;
 
+        Debug.Log("掉头");
+
+        // 这两句的时序很重要
+        headDismemberVisual.Init();
+        headTransform.gameObject.SetActive(false);
+
+        hasHeadDismembered = true;
     }
     private void DismemberArm()
     {
+        if (hasArmDismembered) return;
 
+        Debug.Log("掉胳膊");
+        outerArmDismemberVisual.Init();
+        outerArmTransform.gameObject.SetActive(false);
+        hasArmDismembered = true;
     }
 }
