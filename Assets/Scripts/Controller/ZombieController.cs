@@ -30,6 +30,11 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
             float speed = zombieSO.moveSpeed;
             transform.position += Vector3.left * speed * Time.deltaTime;
         }
+        if (model.zombieState == ZombieState.Biting) BitingUpdateLogic();
+    }
+    private void BitingUpdateLogic()
+    {
+        // 动画是响应状态机播放的，但是pvz里僵尸啃咬植物的逻辑貌似是发生在动画之中的
     }
     private void OnEnable()
     {
@@ -56,14 +61,14 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
         IPlantController plantController = obj.GetComponentInParent<IPlantController>();
         if (model.zombieState != ZombieState.Biting)
         {
-            StartCoroutine(StartBiting());
+            StartBiting(targetPlant);
         }
     }
     // TODO: 先给植物实现血量，之后在实现这个
-    private IEnumerator StartBiting()
+    private void StartBiting(IPlantController targetPlant)
     {
+        this.targetPlant = targetPlant;
         model.zombieState = ZombieState.Biting;
-        yield return null;
     }
 
     // 当受伤的时候调用（用于测试）
