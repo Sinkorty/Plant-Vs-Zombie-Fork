@@ -10,7 +10,6 @@ public class DismemberVisual : MonoBehaviour
     [SerializeField] private GameObject dismemberPart;      // 延迟销毁时间
     [Header("位移相关")]
     [SerializeField] private float acceleration = 2f;
-    [SerializeField] private float localGroundY;
     [Header("旋转相关")]
     [SerializeField] private float initialSpeedMin = 420f;           // 初始旋转速度（度/秒）
     [SerializeField] private float initialRotateSpeedMax = 720f;     // 初始旋转速度（度/秒）
@@ -35,12 +34,12 @@ public class DismemberVisual : MonoBehaviour
     public float fadeoutDelayTimer;
     public float fadeoutTimer;
 
+    private float groundY;                   // 需要专门指定
+
+
     private void Update()
     {
         if (!isInitialized) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            Init();
 
         ProcessMovementUpdateLogic();
         ProcessRotationUpdateLogic();
@@ -52,9 +51,9 @@ public class DismemberVisual : MonoBehaviour
     {
         if (!isProcessing) return;
         velocity += Vector3.down * acceleration * Time.deltaTime;
-        if (transform.localPosition.y > localGroundY)
+        if (transform.position.y > groundY)
         {
-            transform.localPosition += velocity * Time.deltaTime;
+            transform.position += velocity * Time.deltaTime;
         }
         else
         {
@@ -104,7 +103,7 @@ public class DismemberVisual : MonoBehaviour
     /// <summary>
     /// 业务初始化
     /// </summary>
-    public void Init()
+    public void Init(float groundY)
     {
         if (hasDismembered) return;
 
@@ -112,11 +111,21 @@ public class DismemberVisual : MonoBehaviour
         isProcessing = true;
         fadeoutDelayTimer = 0;
         sharedColor = Color.white;
+        this.groundY = groundY;
 
         // 将位置设置到对应肢体的位置之后，设置父子级关系
-        Transform dismemberPartTransform = Instantiate(dismemberPart).transform;
-        transform.position = dismemberPartTransform.position;
-        dismemberPartTransform.SetParent(transform);
+        //Transform dismemberPartTransform = Instantiate(dismemberPart).transform;
+        //float scaleToApply = .85f;
+        //dismemberPartTransform.localScale = Vector3.one * scaleToApply;
+        //dismemberPartTransform.position = dismemberPart.transform.position;
+        //transform.position = dismemberPartTransform.position;
+        //dismemberPartTransform.SetParent(transform, true);
+        //dismemberPartTransform.localPosition = Vector3.zero;
+
+        Transform newOne = Instantiate(dismemberPart).transform;
+        transform.position = dismemberPart.transform.position;
+        newOne.SetParent(transform);
+        transform.SetParent(null);
 
         //originPosition = transform.position;
         velocity = new Vector3(Random.value, 1, 0).normalized; // 赋予 初速度

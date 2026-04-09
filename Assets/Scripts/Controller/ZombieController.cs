@@ -92,7 +92,8 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
         }
     }
 
+    public int GetGridLine() => model.gridLine;
     // 接口实现
-    public int GetCurrentLine() => model.gridLine;
     public HealthModel GetHealthModel() => healthModel;
+
 }

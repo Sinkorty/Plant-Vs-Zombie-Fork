@@ -7,32 +7,35 @@ using UnityEngine;
 /// </summary>
 public class ZombieDamagedVisual : MonoBehaviour
 {
-    [SerializeField] private GameObject healthModelHolder;
+    [SerializeField] private GameObject characterHolder;
 
     [SerializeField] private DismemberVisual outerArmDismemberVisual;
     [SerializeField] private DismemberVisual headDismemberVisual;
 
     [SerializeField] private Transform headTransform;
     [SerializeField] private Transform outerArmTransform;
-    [SerializeField] private Transform outerArmBoneTransform;
+
+    [SerializeField] private GetGroundYEventSO getGroundYEventSO;
 
     private HealthModel healthModel;
+    private int gridLine; // 需要通过ICharacter.GetGridLine()
+
 
     private bool hasHeadDismembered;
     private bool hasArmDismembered;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            healthModel.Health -= 10;
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.H))
+    //    {
+    //        healthModel.Health -= 10;
+    //    }
+    //}
 
-    private void OnEnable()
+    private void Start()
     {
-        // 这里把Start里初始化healthModel挪下来了，主要是因为OnEnable比Start先执行
-        healthModel = healthModelHolder.GetComponent<ICharacter>().GetHealthModel();
+        healthModel = characterHolder.GetComponent<ICharacter>().GetHealthModel();
+        gridLine = characterHolder.GetComponent<IZombieController>().GetGridLine();
         healthModel.OnHealthChanged += HealthModel_OnHealthChanged;
     }
     private void OnDisable()
@@ -58,7 +61,9 @@ public class ZombieDamagedVisual : MonoBehaviour
         Debug.Log("掉头");
 
         // 这两句的时序很重要
-        headDismemberVisual.Init();
+
+        float groundY = getGroundYEventSO.Raise(gridLine);
+        headDismemberVisual.Init(groundY);
         headTransform.gameObject.SetActive(false);
 
         hasHeadDismembered = true;
@@ -68,7 +73,9 @@ public class ZombieDamagedVisual : MonoBehaviour
         if (hasArmDismembered) return;
 
         Debug.Log("掉胳膊");
-        outerArmDismemberVisual.Init();
+
+        float groundY = getGroundYEventSO.Raise(gridLine);
+        outerArmDismemberVisual.Init(groundY);
         outerArmTransform.gameObject.SetActive(false);
         hasArmDismembered = true;
     }

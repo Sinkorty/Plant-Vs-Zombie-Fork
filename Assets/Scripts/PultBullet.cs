@@ -36,9 +36,9 @@ public class PultBullet : MonoBehaviour, IBullet
         // 实际上是zombie的子物体HitCheckbox，因此要从最近的父级寻找ZombieController
         ZombieController zombie = obj.GetComponentInParent<ZombieController>();
         print("invoked");
-        if (zombie.GetCurrentLine() == gridLine)
+        if (zombie.GetGridLine() == gridLine)
         {
-            print($"currentLine: {gridLine}, zombie's line: {zombie.GetCurrentLine()}");
+            print($"currentLine: {gridLine}, zombie's line: {zombie.GetGridLine()}");
             zombie.Hit(bulletSO.damage);
             DestroySelf();
         }

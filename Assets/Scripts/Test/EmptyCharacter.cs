@@ -17,4 +17,5 @@ public class EmptyCharacter : MonoBehaviour, ICharacter
     public HealthModel GetHealthModel() => healthModel;
 
     public void Hit(int damage) => healthModel.Health -= damage;
+    public int GetGridLine() => 1;
 }

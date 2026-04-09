@@ -105,4 +105,5 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
     }
 
     public HealthModel GetHealthModel() => healthModel;
+    public int GetGridLine() => currentGridCell.GetLine();
 }

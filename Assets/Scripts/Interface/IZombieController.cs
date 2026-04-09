@@ -9,4 +9,6 @@ public interface IZombieController
     /// </summary>
     /// <param name="gridLine">µÚ¼¸ÐÐ</param>
     public void Init(int gridLine);
+
+    public int GetGridLine();
 }
