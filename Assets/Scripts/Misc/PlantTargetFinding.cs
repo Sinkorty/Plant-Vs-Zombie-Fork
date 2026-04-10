@@ -36,6 +36,7 @@ public class PlantTargetFinding : MonoBehaviour
             CheckTarget();
         }
     }
+    // TODO: 需要更改
     private void CheckTarget()
     {
         //int count = Physics2D.RaycastNonAlloc(transform.position, Vector2.right, hitArray, distance, layerMaskFlag);
@@ -53,6 +54,8 @@ public class PlantTargetFinding : MonoBehaviour
         //    break;
         //}
         RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.right, distance, layerMaskFlag);
+
+
         if (hitInfo.collider == null)
         {
             plantController.SetTarget(null);
@@ -60,6 +63,13 @@ public class PlantTargetFinding : MonoBehaviour
         }
         Transform hitTransform = hitInfo.transform;
         IZombieController zombieController = hitTransform.GetComponentInParent<IZombieController>();
+        int plantGridLine = plantController.GetGridCell().GetLine();
+
+        if (zombieController.GetGridLine() != plantGridLine)
+        {
+            plantController.SetTarget(null);
+            return;
+        }
         plantController.SetTarget(zombieController);
         //Debug.Log($"hit gameobject: {hitGameObject} check result: {zombieController}");
     }

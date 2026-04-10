@@ -65,7 +65,6 @@ public class ZombieDamagedVisual : MonoBehaviour
         float groundY = getGroundYEventSO.Raise(gridLine);
         headDismemberVisual.Init(groundY);
         headTransform.gameObject.SetActive(false);
-
         hasHeadDismembered = true;
     }
     private void DismemberArm()
@@ -74,7 +73,12 @@ public class ZombieDamagedVisual : MonoBehaviour
 
         Debug.Log("µô¸ì²²");
 
+
         float groundY = getGroundYEventSO.Raise(gridLine);
+
+        Debug.Log(gridLine);
+        Debug.Log(groundY);
+
         outerArmDismemberVisual.Init(groundY);
         outerArmTransform.gameObject.SetActive(false);
         hasArmDismembered = true;

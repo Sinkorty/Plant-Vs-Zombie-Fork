@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 通过订阅事件来告诉事件的调用者对应行的groundY在哪，需要业务初始化
+/// 通过订阅事件来告诉事件的调用者对应行的groundY在哪
 /// </summary>
 public class GroundYPoints : MonoBehaviour
 {
@@ -11,16 +11,18 @@ public class GroundYPoints : MonoBehaviour
 
     private List<float> groundYList;
 
-    /// <summary>
-    /// 业务初始化，调用了才能发挥作用
-    /// </summary>
-    public void Init()
+    private void Awake()
     {
+        groundYList = new List<float>();
         groundYList.Clear();
         foreach (Transform child in transform)
         {
             groundYList.Add(child.position.y);
         }
+    }
+
+    public void Start()
+    {
         getGroundYEventSO.OnFloatEvent += GetGroundYEventSO_OnFloatEvent;
     }
     private void OnDisable()

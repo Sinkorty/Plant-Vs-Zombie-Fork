@@ -123,8 +123,11 @@ public class DismemberVisual : MonoBehaviour
         //dismemberPartTransform.localPosition = Vector3.zero;
 
         Transform newOne = Instantiate(dismemberPart).transform;
+        float scaleToApply = .85f;
+        newOne.localScale = Vector3.one * scaleToApply;
         transform.position = dismemberPart.transform.position;
         newOne.SetParent(transform);
+        newOne.localPosition = Vector3.zero;
         transform.SetParent(null);
 
         //originPosition = transform.position;

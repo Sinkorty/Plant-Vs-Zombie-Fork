@@ -35,7 +35,6 @@ public class PultBullet : MonoBehaviour, IBullet
         // 返回的对象的LayerMask已经是僵尸了，此时判断是不是同一行的（因为投手植物的子弹是抛物线，可能会打到上几行的僵尸）
         // 实际上是zombie的子物体HitCheckbox，因此要从最近的父级寻找ZombieController
         ZombieController zombie = obj.GetComponentInParent<ZombieController>();
-        print("invoked");
         if (zombie.GetGridLine() == gridLine)
         {
             print($"currentLine: {gridLine}, zombie's line: {zombie.GetGridLine()}");

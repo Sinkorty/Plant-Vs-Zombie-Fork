@@ -9,7 +9,7 @@ public class GridCellController : MonoBehaviour
     private GameModel gameModel;
     private GridCellModel model;
 
-    // 简单实现好了
+    // ????????
     private void OnMouseEnter()
     {
         if (!model.HasPlant() && gameModel.HasSelectedPlant())
@@ -38,7 +38,7 @@ public class GridCellController : MonoBehaviour
     }
     //private void OnMouseOver()
     //{
-    //    // TODO: 光这点判断还是不够的，还要知道是否在捡阳光
+    //    // TODO: ??????卸??????????????????????????
     //    if (Input.GetMouseButtonDown(0))
     //    {
     //        SpawnPlant();
@@ -46,7 +46,7 @@ public class GridCellController : MonoBehaviour
     //}
     private void SpawnPlant()
     {
-        // 如果有植物了，就不种
+        // ????????????????
         if (model.HasPlant())
         {
             return;
@@ -58,9 +58,9 @@ public class GridCellController : MonoBehaviour
         plantTransform.GetComponent<IPlantController>().SetGridCell(this); // fix
 
 
-        // 减少阳光
+        // ????????
         gameModel.SunAmount -= model.PlantSO.sunCost;
-        // 集中统一事件管理，这里主要是给 SeedPacketUI 解耦
+        // ????????????????????????? SeedPacketUI ????
         GridMapController.Instance.AnyGridCellPlanted(new GridMapController.OnAnyGridCellPlantedEventArgs { plantSO = model.PlantSO });
     }
 
