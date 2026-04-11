@@ -8,18 +8,16 @@ using UnityEngine;
 public class ZombieDamagedVisual : MonoBehaviour
 {
     [SerializeField] private GameObject characterHolder;
-
+    [SerializeField] private GetGroundYEventSO getGroundYEventSO;
+    
     [SerializeField] private DismemberVisual outerArmDismemberVisual;
     [SerializeField] private DismemberVisual headDismemberVisual;
 
     [SerializeField] private Transform headTransform;
     [SerializeField] private Transform outerArmTransform;
-
-    [SerializeField] private GetGroundYEventSO getGroundYEventSO;
-
+    
     private HealthModel healthModel;
     private int gridLine; // 需要通过ICharacter.GetGridLine()
-
 
     private bool hasHeadDismembered;
     private bool hasArmDismembered;
