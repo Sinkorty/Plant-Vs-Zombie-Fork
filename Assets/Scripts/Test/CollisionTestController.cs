@@ -5,8 +5,8 @@ using UnityEngine;
 public class CollisionTestController : MonoBehaviour
 {
     private CircleCollider2D _collider;
-    ContactFilter2D filter = new ContactFilter2D();
-    List<Collider2D> results = new List<Collider2D>();
+    private ContactFilter2D filter = new ContactFilter2D();
+    private List<Collider2D> results = new List<Collider2D>();
 
     private void Awake()
     {
