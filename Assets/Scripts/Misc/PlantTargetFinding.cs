@@ -10,7 +10,7 @@ public class PlantTargetFinding : MonoBehaviour
 {
     private IPlantController plantController;
     private IZombieController target;
-    
+
     [SerializeField] private float distance;
     [SerializeField] private bool showGizmos = true;
     [SerializeField] private float checkTimerMax = 1f;
@@ -35,12 +35,10 @@ public class PlantTargetFinding : MonoBehaviour
         {
             checkTimer = checkTimerMax;
 
-            if (target == null)
-            {
-                CheckTarget();
-            }
+            CheckTarget();
         }
     }
+
     // TODO: 需要更改
     private void CheckTarget()
     {
@@ -63,23 +61,34 @@ public class PlantTargetFinding : MonoBehaviour
 
         if (hitInfo.collider == null)
         {
-            plantController.SetTarget(null);
-            target = null;
+            SetTarget(null);
             return;
         }
+
         Transform hitTransform = hitInfo.transform;
         IZombieController zombieController = hitTransform.GetComponentInParent<IZombieController>();
         int plantGridLine = plantController.GetGridCell().GetLine();
 
         if (zombieController.GetGridLine() != plantGridLine)
         {
-            plantController.SetTarget(null);
+            SetTarget(null);
             return;
         }
-        plantController.SetTarget(zombieController);
+
+        SetTarget(zombieController);
         //Debug.Log($"hit gameobject: {hitGameObject} check result: {zombieController}");
-        
+
         target = zombieController;
+    }
+
+    // Setter守卫，当target变化的时候在通知IPlantController.SetTarget，防止重复调用
+    private void SetTarget(IZombieController newTarget)
+    {
+        // 值没变化，不通知
+        if (target == newTarget) return;
+    
+        target = newTarget;
+        plantController.SetTarget(target);
     }
 
     private void OnDrawGizmos()
