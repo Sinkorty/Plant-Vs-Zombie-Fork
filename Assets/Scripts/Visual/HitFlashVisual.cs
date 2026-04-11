@@ -5,8 +5,8 @@ public class HitFlashVisual : MonoBehaviour
 {
     [SerializeField] private GameObject healthModelHolder;
     
-    [SerializeField] private float flashTimerMax = .5f;
-    [SerializeField] private float peakValue = .2f;
+    [SerializeField] private float flashTimerMax = .2f;
+    [SerializeField] private float peakValue = .02f;
 
     private float flashTimer;
     private bool startHitFlash;
@@ -51,7 +51,7 @@ public class HitFlashVisual : MonoBehaviour
     }
     private void HealthModelOnOnHealthChanged(object sender, HealthModel.OnHealthChangedEventArgs e)
     {
-        if (e.after - e.before > 0) // ¿ÛÑª£¬ÉÁ°×
+        if (e.before - e.after > 0) // ¿ÛÑª£¬ÉÁ°×
         {
             PlayFlash();
         }

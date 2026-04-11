@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,4 +12,7 @@ public interface IZombieController
     public void Init(int gridLine);
 
     public int GetGridLine();
+
+    public event EventHandler OnDied;
+    public event EventHandler OnHit;
 }

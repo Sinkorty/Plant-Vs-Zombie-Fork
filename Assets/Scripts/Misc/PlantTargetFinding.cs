@@ -9,6 +9,8 @@ using UnityEngine;
 public class PlantTargetFinding : MonoBehaviour
 {
     private IPlantController plantController;
+    private IZombieController target;
+    
     [SerializeField] private float distance;
     [SerializeField] private bool showGizmos = true;
     [SerializeField] private float checkTimerMax = 1f;
@@ -33,7 +35,10 @@ public class PlantTargetFinding : MonoBehaviour
         {
             checkTimer = checkTimerMax;
 
-            CheckTarget();
+            if (target == null)
+            {
+                CheckTarget();
+            }
         }
     }
     // TODO: 需要更改
@@ -59,6 +64,7 @@ public class PlantTargetFinding : MonoBehaviour
         if (hitInfo.collider == null)
         {
             plantController.SetTarget(null);
+            target = null;
             return;
         }
         Transform hitTransform = hitInfo.transform;
@@ -72,6 +78,8 @@ public class PlantTargetFinding : MonoBehaviour
         }
         plantController.SetTarget(zombieController);
         //Debug.Log($"hit gameobject: {hitGameObject} check result: {zombieController}");
+        
+        target = zombieController;
     }
 
     private void OnDrawGizmos()

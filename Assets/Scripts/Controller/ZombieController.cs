@@ -9,8 +9,8 @@ using UnityEngine;
 public class ZombieController : MonoBehaviour, ICharacter, IZombieController
 {
     public event EventHandler OnHit;
-    public event EventHandler OnDie;
-
+    public event EventHandler OnDied;
+    
     [SerializeField] private ZombieSO zombieSO;
     [SerializeField] private CollisionCheck zombieHitboxCollsionCheck;
 
@@ -88,12 +88,18 @@ public class ZombieController : MonoBehaviour, ICharacter, IZombieController
         {
             //model.isDead = true;
             model.zombieState = ZombieState.Dying;
-            OnDie?.Invoke(this, EventArgs.Empty);
+            OnDied?.Invoke(this, EventArgs.Empty);
+            Invoke("DestroySelf", 2f);
         }
     }
 
+    private void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
+
     public int GetGridLine() => model.gridLine;
+
     // 接口实现
     public HealthModel GetHealthModel() => healthModel;
-
 }

@@ -13,7 +13,7 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private PlantVisual melonPultVisual;
 
-    private Transform target; // 要打的目标 TODO：替换为 IZombie
+    private Transform target; // 要打的僵尸
     private GridCellController currentGridCell; // 所在的 GridCell
 
     private HealthModel healthModel;
@@ -28,6 +28,7 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
     {
         healthModel = new HealthModel(plantSO.maxHealth);
     }
+
     private void OnEnable()
     {
         melonPultVisual.OnProject += MelonPultVisual_OnWillLaunch;
@@ -72,12 +73,7 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
 
         PultBullet pultBullet = BulletGenerationManager.Instance.Instantiate(bulletSO) as PultBullet;
         print(currentGridCell.GetLine());
-        pultBullet.Init(bulletSO, bulletSpawnPoint, target.position, currentGridCell.GetLine());
-    }
-
-    public void SetTarget(Transform targetTransform)
-    {
-        target = targetTransform;
+        pultBullet.Init(bulletSO, bulletSpawnPoint, target.transform.position, currentGridCell.GetLine());
     }
     public GridCellController GetGridCell()
     {
@@ -89,6 +85,10 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
     }
     public bool HasTarget() => target != null;
 
+    /// <summary>
+    /// 设置该植物的攻击目标，同时也订阅了僵尸死亡时 SetTarget(null)
+    /// </summary>
+    /// <param name="zombieController"></param>
     public void SetTarget(IZombieController zombieController)
     {
         if (zombieController == null)
@@ -96,8 +96,16 @@ public class MelonPultController : MonoBehaviour, IPlantController, ICharacter
             target = null;
             return;
         }
+        zombieController.OnDied += ZombieController_OnDied;
         target = (zombieController as MonoBehaviour).transform;
     }
+
+    private void ZombieController_OnDied(object sender, EventArgs e)
+    {
+        print("Invoked");
+        SetTarget( null);
+    }
+
 
     public void Hit(int damage)
     {

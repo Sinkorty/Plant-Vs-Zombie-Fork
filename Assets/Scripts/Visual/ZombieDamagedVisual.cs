@@ -47,7 +47,7 @@ public class ZombieDamagedVisual : MonoBehaviour
         {
             DismemberHead();
         }
-        else if (e.after <= healthModel.MaxHealth / 2) // µôÁË°ëÑª£¬¸Ãµô¸ì²²ÁË
+        if (e.after <= healthModel.MaxHealth / 2) // µôÁË°ëÑª£¬¸Ãµô¸ì²²ÁË
         {
             DismemberArm();
         }
